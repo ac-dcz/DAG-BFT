@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"fmt"
 	"time"
 
@@ -14,14 +15,14 @@ import (
 var conf *config.Config
 var err error
 
-func init() {
-	conf, err = config.LoadConfig("", "config")
+var filename = flag.String("config", "config.yaml", "configure file")
+
+func main() {
+	flag.Parse()
+	conf, err = config.LoadConfig("", *filename)
 	if err != nil {
 		panic(err)
 	}
-}
-
-func main() {
 	if conf.Protocol == "gradeddag" {
 		startGradedDAG()
 	} else if conf.Protocol == "tusk" {
