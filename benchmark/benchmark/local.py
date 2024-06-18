@@ -14,7 +14,7 @@ class LocalBench:
 
     def __init__(self, bench_parameters_dict):
         try:
-            self.ts = datetime.now().strftime("%Y-%m-%dv%H:%M:%S")
+            self.ts = datetime.now().strftime("%Y-%m-%dv%H-%M-%S")
             self.bench_parameters = BenchParameters(bench_parameters_dict)
         except ConfigError as e:
             raise BenchError('Invalid nodes or bench parameters', e)
@@ -78,7 +78,7 @@ class LocalBench:
 
             # Wait for the nodes to synchronize
             Print.info('Waiting for the nodes to synchronize...')
-            sleep(15)
+            sleep(self.bench_parameters.sync_time/1000)
 
             # Wait for all transactions to be processed.
             Print.info(f'Running benchmark ({self.bench_parameters.duration} sec)...')

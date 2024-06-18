@@ -175,7 +175,7 @@ class Bench:
 
         # Wait for the nodes to synchronize
         Print.info('Waiting for the nodes to synchronize...')
-        sleep(15)
+        sleep(20)
 
         # Wait for all transactions to be processed.
         duration = bench_parameters.duration
@@ -241,7 +241,7 @@ class Bench:
 
             for batch_size in bench_parameters.batch_size:
                 Print.heading(f'\nRunning {n}/{bench_parameters.node_instance} nodes (batch size: {batch_size:,})')
-                self.ts = datetime.now().strftime("%Y-%m-%dv%H:%M:%S")
+                self.ts = datetime.now().strftime("%Y-%m-%dv%H-%M-%S")
 
                 #Step a: only upload parameters files.
                 try:

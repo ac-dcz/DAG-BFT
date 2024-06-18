@@ -12,7 +12,7 @@ class BenchError(Exception):
 class PathMaker:
     @staticmethod
     def execute_file():
-        return "main"
+        return "node"
     
     @staticmethod
     def config_template_file():

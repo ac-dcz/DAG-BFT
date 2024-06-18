@@ -25,6 +25,7 @@ class BenchParameters:
             self.node_instance = int(data['node_instance']) if 'node_instance' in data else 1
             self.fault_number = int(data["faulty_number"])
             self.protocol = data['protocol']
+            self.sync_time = data['sync_time']
             self.yaml = data
         except KeyError as e:
             raise ConfigError(f'Malformed bench parameters: missing key {e}')

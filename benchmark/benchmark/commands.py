@@ -15,7 +15,7 @@ class CommandMaker:
         
     @staticmethod
     def compile():
-        return 'go build ../main.go'
+        return 'go build -o node ../main.go'
 
     @staticmethod
     def run_config():
@@ -23,7 +23,7 @@ class CommandMaker:
     
     @staticmethod
     def run_node(config_file):
-        return (f'./main --config {config_file}')
+        return (f'./node --config {config_file}')
 
     @staticmethod
     def kill():
