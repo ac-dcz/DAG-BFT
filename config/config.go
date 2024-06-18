@@ -33,6 +33,8 @@ type Config struct {
 	BatchSize            int
 	Round                int
 	Protocol             string
+	SyncTime             int
+	TxSize               int
 }
 
 // NewConfig creates a new variable of type Config for test
@@ -104,6 +106,8 @@ func LoadConfig(configPrefix, configName string) (*Config, error) {
 		BatchSize:    viperConfig.GetInt("batch_size"),
 		Round:        viperConfig.GetInt("round"),
 		Protocol:     viperConfig.GetString("protocol"),
+		SyncTime:     viperConfig.GetInt("sync_time"),
+		TxSize:       viperConfig.GetInt("tx_size"),
 	}
 
 	peersP2PPortMapString := viperConfig.GetStringMap("peers_p2p_port")

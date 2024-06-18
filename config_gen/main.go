@@ -115,12 +115,12 @@ func main() {
 				if ipIndex == 0 {
 					for k := 0; k < leaderCount; k++ {
 						subScript := strconv.Itoa(k)
-						p2pPortMapInterface["node"+subScript] = portAsInt + k*10
+						p2pPortMapInterface["node"+subScript] = portAsInt + k
 					}
 					break
 				}
 				subScript := strconv.Itoa((ipIndex-1)*ProcessCount + j + leaderCount)
-				p2pPortMapInterface["node"+subScript] = portAsInt + j*10
+				p2pPortMapInterface["node"+subScript] = portAsInt + j
 			}
 		} else {
 			panic("p2p_listen_port contains a non-int value")
@@ -162,13 +162,14 @@ func main() {
 	// load simple parameter
 	maxPool := viperRead.GetInt("max_pool")
 	batchSize := viperRead.GetInt("batch_size")
+	txSize := viperRead.GetInt("tx_size")
 	logLevel := viperRead.GetInt("log_level")
 	round := viperRead.GetInt("round")
 	protocol := viperRead.GetString("protocol")
 	faultyNum := viperRead.GetInt("faulty_number")
 	faultyNode := generateRandomNumber(TotalNodeNum, faultyNum)
 	fmt.Println("FaultyNodes:", faultyNode)
-
+	sync_time := viperRead.GetInt("sync_time")
 	// write to configure files
 	for _, name := range clusterName {
 		viperWrite := viper.New()
@@ -216,7 +217,8 @@ func main() {
 			viperWrite.Set("cluster_ips", clusterMapInterface)
 			viperWrite.Set("round", round)
 			viperWrite.Set("protocol", protocol)
-
+			viperWrite.Set("sync_time", sync_time)
+			viperWrite.Set("tx_size", txSize)
 			if judgeWhetherInSlice(replicaId, faultyNode) {
 				viperWrite.Set("is_faulty", 1)
 			} else {
