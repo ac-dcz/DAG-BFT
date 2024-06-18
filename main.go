@@ -34,23 +34,27 @@ func main() {
 	}
 }
 
-func startGradedDAG() {
+func startGradedDAG() { 
+
 	node := gradeddag.NewNode(conf)
 	if err = node.StartP2PListen(); err != nil {
 		panic(err)
 	}
-	// wait for each node to start
-	time.Sleep(time.Second * 5)
-	if err = node.EstablishP2PConns(); err != nil {
-		panic(err)
+	for {
+		if err = node.EstablishP2PConns(); err == nil {
+			time.Sleep(time.Millisecond * 100)
+			break
+		}
 	}
+	// wait for each node to start
+	time.Sleep(time.Millisecond * time.Duration(conf.SyncTime))
+
 	node.InitCBC(conf)
 	fmt.Println("node starts the GradedDAG!")
 	go node.RunLoop()
 	go node.HandleMsgLoop()
 	go node.CBCOutputBlockLoop()
 	node.DoneOutputLoop()
-
 }
 
 func startWahoo() {
@@ -58,11 +62,15 @@ func startWahoo() {
 	if err = node.StartP2PListen(); err != nil {
 		panic(err)
 	}
-	// wait for each node to start
-	time.Sleep(time.Second * 15)
-	if err = node.EstablishP2PConns(); err != nil {
-		panic(err)
+	for {
+		if err = node.EstablishP2PConns(); err == nil {
+			time.Sleep(time.Millisecond * 100)
+			break
+		}
 	}
+	// wait for each node to start
+	time.Sleep(time.Millisecond * time.Duration(conf.SyncTime))
+
 	node.InitPB(conf)
 	fmt.Println("node starts the Wahoo!")
 	go node.RunLoop()
@@ -75,11 +83,15 @@ func startTusk() {
 	if err = node.StartP2PListen(); err != nil {
 		panic(err)
 	}
-	// wait for each node to start
-	time.Sleep(time.Second * 15)
-	if err = node.EstablishP2PConns(); err != nil {
-		panic(err)
+	for {
+		if err = node.EstablishP2PConns(); err == nil {
+			time.Sleep(time.Millisecond * 100)
+			break
+		}
 	}
+	// wait for each node to start
+	time.Sleep(time.Millisecond * time.Duration(conf.SyncTime))
+
 	node.InitRBC(conf)
 	fmt.Println("node starts the Tusk!")
 	go node.RunLoop()

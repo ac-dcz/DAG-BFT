@@ -62,6 +62,7 @@ type Node struct {
 	blockSend  map[uint64]bool // mark whether have sent block in a round
 	doneSend   map[uint64]bool // mark whether have sent done in a round
 	blockQurey uint64
+	txSize     int
 }
 
 func NewNode(conf *config.Config) *Node {
@@ -107,7 +108,7 @@ func NewNode(conf *config.Config) *Node {
 	n.privateKey = conf.PrivateKey
 	n.tsPrivateKey = conf.TsPrivateKey
 	n.tsPublicKey = conf.TsPublicKey
-
+	n.txSize = conf.TxSize
 	n.reflectedTypesMap = reflectedTypesMap
 
 	n.nextRound = make(chan uint64, 1)
@@ -277,7 +278,7 @@ func (n *Node) tryToElectLeader(round uint64) {
 	}
 }
 
-//we need collect 3f+1 ready msg
+// we need collect 3f+1 ready msg
 func (n *Node) checkIfEnoughReady(ready *Ready) {
 	n.lock.Lock()
 	readies := n.ready[ready.Round][ready.BlockSender]
@@ -432,7 +433,7 @@ func (n *Node) commitAncestorBlocks(round uint64) {
 
 func (n *Node) NewBlock(round uint64, previousHash map[string][]byte) *Block {
 	var batch [][]byte
-	tx := generateTX(20)
+	tx := generateTX(n.txSize)
 	for i := 0; i < n.batchSize; i++ {
 		batch = append(batch, tx)
 	}

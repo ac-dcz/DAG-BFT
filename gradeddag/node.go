@@ -58,6 +58,7 @@ type Node struct {
 	evaluation []int64 // store the latency of every blocks
 	commitTime []int64 // the time that the leader is committed
 	cbc        *CBC
+	txSize     int
 }
 
 func NewNode(conf *config.Config) *Node {
@@ -102,7 +103,7 @@ func NewNode(conf *config.Config) *Node {
 	n.privateKey = conf.PrivateKey
 	n.tsPrivateKey = conf.TsPrivateKey
 	n.tsPublicKey = conf.TsPublicKey
-
+	n.txSize = conf.TxSize
 	n.reflectedTypesMap = reflectedTypesMap
 
 	n.nextRound = make(chan uint64, 1)
@@ -144,6 +145,7 @@ func (n *Node) RunLoop() {
 
 	n.logger.Info("the average", "latency", latency, "throughput", throughPut)
 	n.logger.Info("the total commit", "block number", blockNum, "time", pastTime)
+	n.logger.Info("batch size: ", n.batchSize)
 }
 
 func (n *Node) InitCBC(conf *config.Config) {
@@ -387,7 +389,7 @@ func (n *Node) commitAncestorBlocks(round uint64) {
 
 func (n *Node) NewBlock(round uint64, previousHash map[string][]byte) *Block {
 	var batch [][]byte
-	tx := generateTX(20)
+	tx := generateTX(n.txSize)
 	for i := 0; i < n.batchSize; i++ {
 		batch = append(batch, tx)
 	}
