@@ -20,6 +20,8 @@ max_pool: 31
 log_level: 3
 tx_size: 250
 batch_size: 500
+node_instance: 1
+sync_time: 1000
 round: 50
 faulty_number: 0
 protocol: wahoo

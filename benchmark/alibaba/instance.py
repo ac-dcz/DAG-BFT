@@ -280,9 +280,10 @@ class InstanceManager:
         try:
             ids, _ = self._get(['Stopping', 'Stopped'])
             for region, client in self.ecs_clients.items():
-                for id in ids[region]:
+                if ids[region]:
                     target = ids[region]
                     target = target if len(target) < max else target[:max]
+                    print(target)
                     size += len(target)
                     start_instances_request = ecs_20140526_models.StartInstancesRequest(
                         region_id=region,

@@ -83,6 +83,7 @@ func startTusk() {
 	if err = node.StartP2PListen(); err != nil {
 		panic(err)
 	}
+	
 	for {
 		if err = node.EstablishP2PConns(); err == nil {
 			time.Sleep(time.Millisecond * 100)

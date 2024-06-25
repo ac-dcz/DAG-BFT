@@ -14,13 +14,15 @@ def local(ctx):
     bench_params = {
         "nodes": 4,
         "node_instance": 1,
+        "sync_time":1_000,
         "max_pool": 20,
         "log_level": 3,
-        "batch_size": 200,
+        "batch_size": 800,
         "duration": 30,
-        "round": 80,
+        "round": 50,
         "faulty_number": 0,
-        "protocol": "tusk"
+        "protocol": "tusk",
+        "tx_size": 250,
     }
     try:
         ret = LocalBench(bench_params).run(debug=True)
@@ -53,7 +55,7 @@ def cleansecurity(ctx):
         Print.error(e)
 
 @task
-def start(ctx, max=10):
+def start(ctx, max=3):
     ''' Start at most `max` machines per data center '''
     try:
         InstanceManager.make().start_instances(max)
@@ -94,15 +96,18 @@ def info(ctx):
 def remote(ctx):
     ''' Run benchmarks on alibaba cloud '''
     bench_params = {
-        "nodes": [4],
-        "node_instance": 1,
+        "nodes": [10],
+        "node_instance": 1 ,
+        "sync_time":1_000,
         "max_pool": 20,
         "log_level": 3,
-        "batch_size": [800],
-        "duration": 30,
-        "round": 80,
-        "faulty_number": 0,
-        "protocol": "qcdag"
+        "batch_size": [5_00,1_000,1_500,2_000,2_500,3_000,3_500],
+        "duration": 40,
+        "round": 20,
+        "faulty_number": 3,
+        "protocol": "tusk",
+        "tx_size": 250,
+        "runs": 1,
     }
     try:
         Bench(ctx).run(bench_params, debug=False)

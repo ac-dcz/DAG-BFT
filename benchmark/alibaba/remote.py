@@ -200,7 +200,8 @@ class Bench:
         
         node_instance = bench_parameters.node_instance
         # Download log files.
-        progress = progress_bar(hosts, prefix='Downloading logs:')
+        cnt = max(1,len(hosts)//4)
+        progress = progress_bar(hosts[:cnt], prefix='Downloading logs:')
         for i, host in enumerate(progress):
             c = Connection(host, user='root', connect_kwargs=self.connect)
             for j in range(node_instance):
